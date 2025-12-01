@@ -8,7 +8,6 @@ load_dotenv()
 
 app = FastAPI(title="SharpSharks API")
 
-# CORS configuration
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -17,9 +16,22 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# API Keys
 ODDS_API_KEY = os.getenv("ODDS_API_KEY", "b4442eb07c0cdc3007a1b5120144cfd3")
 X_BEARER_TOKEN = os.getenv("X_BEARER_TOKEN", "AAAAAAAAAAAAAAAAAKa/5gEAAAAA2O2ya+wsvFZ1J2bl+TOldXA0RWs=WhghPKidflvDm3raeL1LHvcEIgKolnmbce95dz5kCaWr0WUuOF")
+
+@app.get("/")
+async def root():
+    return {
+        "service": "SharpSharks API",
+        "version": "1.0.0",
+        "status": "operational",
+        "endpoints": {
+            "health": "/health",
+            "props": "/api/props/{league}",
+            "beat_buzz": "/api/beat-buzz/{league}",
+            "smart_picks": "/api/smart-picks"
+        }
+    }
 
 @app.get("/health")
 async def health_check():

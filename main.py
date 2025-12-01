@@ -19,19 +19,14 @@ app.add_middleware(
 
 # API Keys
 ODDS_API_KEY = os.getenv("ODDS_API_KEY", "b4442eb07c0cdc3007a1b5120144cfd3")
-X_BEARER_TOKEN = os.getenv("X_BEARER_TOKEN", "AAAAAAAAAAAAAAAAAKa%2F5gEAAAAA2O2ya%2BwsvFZ1J2bl%2BTOldXA0RWs%3DWhghPKidflvDm3raeL1LHvcEIgKolnmbce95dz5kCaWr0WUuOF")
+X_BEARER_TOKEN = os.getenv("X_BEARER_TOKEN", "AAAAAAAAAAAAAAAAAKa/5gEAAAAA2O2ya+wsvFZ1J2bl+TOldXA0RWs=WhghPKidflvDm3raeL1LHvcEIgKolnmbce95dz5kCaWr0WUuOF")
 
 @app.get("/health")
 async def health_check():
-    """Health check endpoint"""
     return {"status": "ok", "service": "SharpSharks API"}
 
 @app.get("/api/props/{league}")
 async def get_props(league: str):
-    """
-    Fetch props for a specific league
-    Leagues: nba, nfl, ncaab, cfb
-    """
     league_map = {
         "nba": "basketball_nba",
         "nfl": "americanfootball_nfl",
@@ -60,9 +55,6 @@ async def get_props(league: str):
 
 @app.get("/api/beat-buzz/{league}")
 async def get_beat_buzz(league: str):
-    """
-    Fetch beat writer sentiment from Twitter API
-    """
     try:
         async with httpx.AsyncClient() as client:
             headers = {"Authorization": f"Bearer {X_BEARER_TOKEN}"}
@@ -82,9 +74,6 @@ async def get_beat_buzz(league: str):
 
 @app.get("/api/smart-picks")
 async def get_smart_picks():
-    """
-    Return ML-generated smart picks
-    """
     return {
         "picks": [
             {
